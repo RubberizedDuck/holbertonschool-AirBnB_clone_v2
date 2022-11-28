@@ -27,7 +27,8 @@ class DBStorage():
         sql_host = getenv('HBNB_MYSQL_HOST')
         sql_db = getenv('HBNB_MYSQL_DB')
         self.__engine = create_engine(
-            f"mysql+mysqldb://{sql_user}:{sql_pass}@{sql_host}/{sql_db}",
+            "mysql+mysqldb://{}:{}@{}/{}"
+            .format(sql_user, sql_pass, sql_host, sql_db),
             pool_pre_ping=True
         )
 
@@ -62,7 +63,7 @@ class DBStorage():
             query = self.__session.query(class_dict[cls]).all()
             for row in query:
                 id = row.id
-                key = f'{row.__class__.__name__}.{id}'
+                key = '{}.{}'.format(row.__class__.__name__, id)
                 delattr(row, '_sa_instance_state')
                 obj_dict[key] = row
         return obj_dict
