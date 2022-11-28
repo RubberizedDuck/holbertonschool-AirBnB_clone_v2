@@ -63,3 +63,7 @@ class FileStorage:
             obj_name = obj.__class__.__name__ + '.' + obj.id
             if obj_name in self.__objects:
                 del self.__objects[obj_name]
+
+    def close(self):
+        """ calls reload to restore json """
+        self.reload()
