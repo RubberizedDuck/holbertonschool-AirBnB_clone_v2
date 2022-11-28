@@ -4,17 +4,21 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from models.city import City
-import models.engine.file_storage
+from models.engine.file_storage import FileStorage
+from os import getenv
 
 
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"
-    name = Column(String(128), nullable=False)
-    cities = relationship(
-        "City",
-        backref="state",
-        cascade="all, delete")
+    if getenv("HBNB_TYPE_STORAGE") == "db"):
+        name = Column(String(128), nullable=False)
+        cities = relationship(
+            "City",
+            backref="state",
+            cascade="all, delete")
+    else:
+        name = ""
 
     # I think more needs to be added. Need to add a getter
     # for the FileStorage and I think we may have to have an if/else
@@ -27,7 +31,7 @@ class State(BaseModel, Base):
         a foreign key reference.
         '''
         city_list = []
-        fs = file_storage.FileStorage()
+        fs = FileStorage()
         '''
         Use the method from filestorage to return list of cities.
         Currently no way toi truncate list, will just be dict that is
