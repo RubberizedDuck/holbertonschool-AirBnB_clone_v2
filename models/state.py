@@ -16,17 +16,18 @@ class State(BaseModel, Base):
         cities = relationship(
             "City",
             backref="state",
-            cascade="all, delete")
+            cascade="all, delete",
+            lazy="joined")
     else:
         name = ""
 
-    @property
-    def cities(self):
-        """Getter attribute
-        that returns list of City instances related to state"""
-        list_cities = []
-        all_cities = models.storage.all(City)
-        for city in all_cities.values():
-            if city.state_id == self.id:
-                list_cities.append(city)
-        return list_cities
+        @property
+        def cities(self):
+            """Getter attribute
+            that returns list of City instances related to state"""
+            list_cities = []
+            all_cities = models.storage.all(City)
+            for city in all_cities.values():
+                if city.state_id == self.id:
+                    list_cities.append(city)
+            return list_cities
