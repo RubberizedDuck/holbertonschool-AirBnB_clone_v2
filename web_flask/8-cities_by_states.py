@@ -19,8 +19,8 @@ def app_teardown(exception=None):
 def list_state():
     """ rendering template data from state """
     return render_template('8-cities_by_states.html',
-                           states=storage.all("State"))
-
+                           states=storage.all("State"),
+                           cities=storage.all("City"))
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
